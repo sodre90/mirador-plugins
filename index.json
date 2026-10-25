@@ -1,0 +1,26 @@
+{
+  "plugins": [
+    {
+      "name": "media",
+      "title": "Media",
+      "description": "Edit a video or a photo with the agent: mark where something is wrong on the frame, and the agent trims, cuts, sets exposure, speed and volume, crops and turns it, then renders the result.",
+      "recommendWhen": "the user wants to edit a video or a photo, or to show you a moment or a spot in one",
+      "repo": "https://github.com/sodre90/mirador-media.git",
+      "branch": "main"
+    },
+    {
+      "name": "checklist",
+      "title": "Checklist",
+      "description": "A checklist of the steps of the agent's work beside the canvas, which the agent and the user tick as they go.",
+      "recommendWhen": "the work has several steps",
+      "comesWithMirador": true
+    },
+    {
+      "name": "review",
+      "title": "Code review",
+      "description": "Code reviews and guided tours of the code flow, with findings on the diff that the user keeps or drops and posts to the pull request.",
+      "recommendWhen": "the user wants code reviewed or explained",
+      "comesWithMirador": true
+    }
+  ]
+}
