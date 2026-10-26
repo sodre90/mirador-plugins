@@ -20,4 +20,8 @@ Add an entry to `index.json`:
 - `description`: a sentence on what it does
 - `recommendWhen`: when an agent should offer it, completing "Recommend it when …"
 - `repo`: an https git URL anyone can clone
-- `branch` (optional): the branch to install; otherwise the repo's default branch
+- `branch` (optional): a branch to install and follow instead of the releases; leave it out for a plugin that tags releases
+
+## Releases
+
+A plugin gives its release in its `plugin.json` as `version`, `x.y.z`, and tags each release `v<version>`, such as `v1.2.0`. Mirador installs the newest release tag and offers newer ones as updates. It refuses a release whose `plugin.json` gives another version than its tag, and it doesn't load a plugin without a version. A repo that tags no release installs from its default branch.
