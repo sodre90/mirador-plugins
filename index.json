@@ -9,6 +9,14 @@
       "branch": "main"
     },
     {
+      "name": "google-docs",
+      "title": "Google Docs",
+      "description": "Edit a Google Doc with the agent: it proposes changes, comments and replies, you approve them or type in the doc yourself, and Send puts them in Docs as suggestions.",
+      "recommendWhen": "the user wants to write, edit or review a Google Doc, or answer its comments",
+      "repo": "https://github.com/sodre90/mirador-google-docs.git",
+      "branch": "main"
+    },
+    {
       "name": "checklist",
       "title": "Checklist",
       "description": "A checklist of the steps of the agent's work beside the canvas, which the agent and the user tick as they go.",
