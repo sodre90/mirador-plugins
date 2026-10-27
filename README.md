@@ -8,6 +8,7 @@ The plugins listed in Settings → Plugins of [Mirador](https://github.com/sodre
 | --- | --- |
 | [Media](https://github.com/sodre90/mirador-media) | Edit a video or a photo with the agent. |
 | [Google Docs](https://github.com/sodre90/mirador-google-docs) | Edit a Google Doc with the agent; changes arrive as suggestions. |
+| [Delegate](https://github.com/sodre90/mirador-delegate) | Hands easy tasks to another profile, such as a local model. |
 | [Checklist](https://github.com/sodre90/mirador-checklist) | The steps of the agent's work, ticked as they go. Installed with Mirador. |
 | [Code review](https://github.com/sodre90/mirador-review) | Code reviews and guided tours of the code flow. Installed with Mirador. |
 

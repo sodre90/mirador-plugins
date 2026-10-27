@@ -15,6 +15,13 @@
       "repo": "https://github.com/sodre90/mirador-google-docs.git"
     },
     {
+      "name": "delegate",
+      "title": "Delegate",
+      "description": "Hand easy, self-contained tasks to a conversation on another profile, such as one running a local model; its answer comes back to the agent when it finishes.",
+      "recommendWhen": "the user wants tasks handed to another profile or a local model, or to save their main model's usage on easy ones",
+      "repo": "https://github.com/sodre90/mirador-delegate.git"
+    },
+    {
       "name": "checklist",
       "title": "Checklist",
       "description": "A checklist of the steps of the agent's work beside the canvas, which the agent and the user tick as they go.",
