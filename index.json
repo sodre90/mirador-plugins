@@ -4,7 +4,7 @@
       "name": "media",
       "title": "Media",
       "description": "Edit a video or a photo with the agent: mark where something is wrong on the frame, and the agent trims, cuts, sets exposure, speed and volume, crops and turns it, then renders the result.",
-      "recommendWhen": "the user wants to edit a video or a photo, or to show you a moment or a spot in one",
+      "recommendWhen": "the user wants to edit a video or a photo, to show you a moment or a spot in one, or to choose between takes, clips or photos by playing or looking at them",
       "repo": "https://github.com/sodre90/mirador-media.git"
     },
     {
