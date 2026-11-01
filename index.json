@@ -5,35 +5,98 @@
       "title": "Media",
       "description": "Edit a video or a photo with the agent: mark where something is wrong on the frame, and the agent trims, cuts, sets exposure, speed and volume, crops and turns it, then renders the result.",
       "recommendWhen": "the user wants to edit a video or a photo, to show you a moment or a spot in one, or to choose between takes, clips or photos by playing or looking at them",
-      "repo": "https://github.com/sodre90/mirador-media.git"
+      "repo": "https://github.com/sodre90/mirador-media.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#e5484d\"/><rect x=\"12\" y=\"18\" width=\"40\" height=\"28\" rx=\"4\" fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M28 25v14l11-7z\" fill=\"#fff\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-media/v1.1.3/screenshots/notes-on-moments.png",
+          "caption": "Mark a moment or a spot on the frame and say what is wrong there"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-media/v1.1.3/screenshots/trimmed-timeline.png",
+          "caption": "Trims, cuts and slowed parts, each on the timeline"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-media/v1.1.3/screenshots/photo-crop-exposure.png",
+          "caption": "A photo cropped and brightened, with a note on the part that needs work"
+        }
+      ]
     },
     {
       "name": "google-docs",
       "title": "Google Docs",
       "description": "Edit a Google Doc with the agent: it proposes changes, comments and replies, you approve them or type in the doc yourself, and Send puts them in Docs as suggestions.",
       "recommendWhen": "the user wants to write, edit or review a Google Doc, or answer its comments",
-      "repo": "https://github.com/sodre90/mirador-google-docs.git"
+      "repo": "https://github.com/sodre90/mirador-google-docs.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#2f6bff\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 12h18l10 10v30H18z\"/><path d=\"M36 12v10h10M24 32h14M24 40h9\"/></g><path d=\"M40 52l11-11 4 4-11 11h-4z\" fill=\"#fff\" stroke=\"#2f6bff\" stroke-width=\"2\" stroke-linejoin=\"round\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-google-docs/v1.1.2/screenshots/proposed-changes.png",
+          "caption": "The agent's changes show in the text and wait for you to approve them"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-google-docs/v1.1.2/screenshots/comment-thread.png",
+          "caption": "A comment thread with the agent's reply, waiting for your approval"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-google-docs/v1.1.2/screenshots/ask-the-agent.png",
+          "caption": "Select text and ask the agent to change it or comment on it"
+        }
+      ]
     },
     {
       "name": "delegate",
       "title": "Delegate",
       "description": "Hand easy, self-contained tasks to a conversation on another profile, such as one running a local model; its answer comes back to the agent when it finishes.",
       "recommendWhen": "the user wants tasks handed to another profile or a local model, or to save their main model's usage on easy ones",
-      "repo": "https://github.com/sodre90/mirador-delegate.git"
+      "repo": "https://github.com/sodre90/mirador-delegate.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#d97706\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"18\" cy=\"32\" r=\"6\"/><circle cx=\"46\" cy=\"20\" r=\"6\"/><circle cx=\"46\" cy=\"44\" r=\"6\"/><path d=\"M24 29l16-7M24 35l16 7\"/></g></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-delegate/v0.3.2/screenshots/reply-in-calling-conversation.png",
+          "caption": "A delegated task's answer arrives in your conversation"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-delegate/v0.3.2/screenshots/delegate-to-setting.png",
+          "caption": "Delegate to picks the profile that takes the easy tasks"
+        }
+      ]
     },
     {
       "name": "checklist",
       "title": "Checklist",
       "description": "A checklist of the steps of the agent's work beside the canvas, which the agent and the user tick as they go.",
       "recommendWhen": "the work has several steps",
-      "repo": "https://github.com/sodre90/mirador-checklist.git"
+      "repo": "https://github.com/sodre90/mirador-checklist.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#12a150\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 20l4 4 7-8M13 34l4 4 7-8\"/><path d=\"M31 21h20M31 35h20M31 47h20\"/><circle cx=\"18\" cy=\"47\" r=\"3\"/></g></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-checklist/v1.0.4/screenshots/release-checklist-half-done.png",
+          "caption": "A checklist of a release, half done, with two steps left for you"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-checklist/v1.0.4/screenshots/release-checklist-waiting-on-you.png",
+          "caption": "The agent ticks its steps off as it goes; yours wait for you"
+        }
+      ]
     },
     {
       "name": "review",
       "title": "Code review",
       "description": "Code reviews and guided tours of the code flow, with findings on the diff that the user keeps or drops and posts to the pull request.",
       "recommendWhen": "the user wants code reviewed or explained",
-      "repo": "https://github.com/sodre90/mirador-review.git"
+      "repo": "https://github.com/sodre90/mirador-review.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#7a5af8\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M23 20L13 32l10 12M41 20l10 12-10 12\"/></g><circle cx=\"32\" cy=\"32\" r=\"3.5\" fill=\"#fff\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-review/v1.0.9/screenshots/review-findings.png",
+          "caption": "Findings sit on the diff, and you decide which to keep"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-review/v1.0.9/screenshots/tour-steps.png",
+          "caption": "A guided tour walks through the code, step by step"
+        }
+      ]
     }
   ]
 }

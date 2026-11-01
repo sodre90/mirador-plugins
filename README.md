@@ -1,6 +1,6 @@
 # Official Mirador plugins
 
-The plugins listed in Settings → Plugins of [Mirador](https://github.com/sodre90/mirador), and offered by its agents when one would help.
+The plugins listed in Plugins… of [Mirador](https://github.com/sodre90/mirador), and offered by its agents when one would help.
 
 `index.json` lists them. Each one lives in a repo of its own, which Mirador clones and builds when the user installs it. Mirador installs the checklist and code review plugins by itself at its first start; they can be removed like any other.
 
@@ -17,11 +17,13 @@ The plugins listed in Settings → Plugins of [Mirador](https://github.com/sodre
 Add an entry to `index.json`:
 
 - `name`: the `name` in the plugin's `plugin.json`
-- `title`: as Settings shows it
+- `title`: as Plugins… shows it
 - `description`: a sentence on what it does
 - `recommendWhen`: when an agent should offer it, completing "Recommend it when …"
 - `repo`: an https git URL anyone can clone
 - `branch` (optional): a branch to install and follow instead of the releases; leave it out for a plugin that tags releases
+- `icon` (optional): the plugin's icon as SVG text, the same as the `icon.svg` its `plugin.json` names; up to 64 KB. Without one, Mirador shows a coloured letter
+- `screenshots` (optional): pictures of the plugin at work for its page in Plugins…, each `{ "url", "caption" }`, with the URL an https link to a file of the plugin's repo at a release tag, such as `https://raw.githubusercontent.com/sodre90/mirador-media/v1.1.3/screenshots/trimmed-timeline.png`
 
 ## Releases
 
