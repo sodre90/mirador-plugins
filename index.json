@@ -55,7 +55,7 @@
     {
       "name": "delegate",
       "title": "Delegate",
-      "description": "Hand easy, self-contained tasks to a conversation on another profile, such as one running a local model; its answer comes back to the agent when it finishes.",
+      "description": "Hand tasks to a conversation on another profile.",
       "tagline": "Hand easy tasks to a conversation on another profile, such as a local model.",
       "kinds": [
         "canvas"
