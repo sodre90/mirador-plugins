@@ -8,6 +8,7 @@ The plugins listed in Plugins… of [Mirador](https://github.com/sodre90/mirador
 | --- | --- |
 | [Media](https://github.com/sodre90/mirador-media) | Edit a video or a photo with the agent. |
 | [Google Docs](https://github.com/sodre90/mirador-google-docs) | Edit a Google Doc with the agent; changes arrive as suggestions. |
+| [NeoManuscript](https://github.com/akanto/neo-manuscript) | A LaTeX and Markdown editor with a live PDF, which the agent edits with you. |
 | [Delegate](https://github.com/sodre90/mirador-delegate) | Hands easy tasks to another profile, such as a local model. |
 | [Checklist](https://github.com/sodre90/mirador-checklist) | The steps of the agent's work, ticked as they go. Installed with Mirador. |
 | [Code review](https://github.com/sodre90/mirador-review) | Code reviews and guided tours of the code flow. Installed with Mirador. |

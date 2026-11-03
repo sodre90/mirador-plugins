@@ -53,6 +53,32 @@
       ]
     },
     {
+      "name": "neo-manuscript",
+      "title": "NeoManuscript",
+      "description": "Write LaTeX in Source or Visual mode, where headings, math and references show as they'll look. The PDF builds as you type (latexmk with MacTeX, or Tectonic), errors link to their lines, and double-clicking the PDF jumps to the source. Markdown files get the same modes and a live preview. The agent reads the document and edits it with you.",
+      "tagline": "A LaTeX and Markdown editor with a live PDF, which your agent can edit with you.",
+      "kinds": [
+        "app"
+      ],
+      "recommendWhen": "the user wants to write or edit a LaTeX or Markdown document, such as a paper, and see its PDF or preview as it changes",
+      "repo": "https://github.com/akanto/neo-manuscript.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1024\" height=\"1024\" viewBox=\"0 0 1024 1024\"><defs><radialGradient id=\"bg\" cx=\"0.4\" cy=\"0.3\" r=\"0.9\"><stop offset=\"0\" stop-color=\"#24375e\"/><stop offset=\"1\" stop-color=\"#0c1220\"/></radialGradient><linearGradient id=\"page\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fbf8f1\"/><stop offset=\"1\" stop-color=\"#efe9dc\"/></linearGradient></defs><rect x=\"100\" y=\"100\" width=\"824\" height=\"824\" rx=\"185\" fill=\"url(#bg)\"/><rect x=\"268\" y=\"196\" width=\"488\" height=\"632\" rx=\"36\" fill=\"url(#page)\"/><text x=\"512\" y=\"600\" text-anchor=\"middle\" font-family=\"'Iowan Old Style', Palatino, Georgia, serif\" font-size=\"400\" font-weight=\"700\" fill=\"#1d2b4a\">N</text><rect x=\"340\" y=\"690\" width=\"344\" height=\"22\" rx=\"11\" fill=\"#ffd479\"/><rect x=\"340\" y=\"740\" width=\"250\" height=\"22\" rx=\"11\" fill=\"#ffd479\" opacity=\".6\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/akanto/neo-manuscript/v0.2.1/screenshots/visual.png",
+          "caption": "LaTeX in Visual mode next to its PDF"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/akanto/neo-manuscript/v0.2.1/screenshots/errors.png",
+          "caption": "Source mode, with a LaTeX error marked on its line"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/akanto/neo-manuscript/v0.2.1/screenshots/markdown.png",
+          "caption": "A Markdown file in Visual mode, with its live preview"
+        }
+      ]
+    },
+    {
       "name": "delegate",
       "title": "Delegate",
       "description": "Hand tasks to a conversation on another profile.",
