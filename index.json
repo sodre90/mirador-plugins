@@ -79,6 +79,100 @@
       ]
     },
     {
+      "name": "github",
+      "title": "GitHub",
+      "description": "The issues and pull requests of a workspace's GitHub repository in a tab beside the chat: find, read, comment on, review and merge them, and hand one to the agent to work on, review, or fix a failing check.",
+      "tagline": "A workspace's GitHub issues and pull requests in a tab; hand one to the agent.",
+      "kinds": [
+        "canvas"
+      ],
+      "recommendWhen": "the user works on a GitHub repository's issues or pull requests, such as reviewing a pull request, seeing what waits for their review, or fixing a failing check",
+      "repo": "https://github.com/sodre90/mirador-github.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 48 48\"><defs><linearGradient id=\"tile\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#57606a\"/><stop offset=\"1\" stop-color=\"#1f2328\"/></linearGradient></defs><rect width=\"48\" height=\"48\" rx=\"12\" fill=\"url(#tile)\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"15\" cy=\"13\" r=\"3.6\"/><circle cx=\"15\" cy=\"35\" r=\"3.6\"/><path d=\"M15 16.6v14.8\"/><path d=\"M33 31.4V20a4.5 4.5 0 0 0-4.5-4.5H23\"/><path d=\"m26 11.5-3.5 4 3.5 4\"/></g><circle cx=\"33\" cy=\"35\" r=\"3.6\" fill=\"#3fb950\" stroke=\"#3fb950\" stroke-width=\"1\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-github/v0.2.1/docs/checks.png",
+          "caption": "A pull request beside the list, with its failing check"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-github/v0.2.1/docs/list.png",
+          "caption": "The open pull requests, with their checks and reviews"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-github/v0.2.1/docs/prompts.png",
+          "caption": "A workspace's own text for the review prompt"
+        }
+      ]
+    },
+    {
+      "name": "jira",
+      "title": "Jira",
+      "description": "A workspace's Jira project in a tab beside the chat: your issues and the sprint board, status, assignee and labels changed in a click, and an issue handed to the agent to work on, or an epic to plan.",
+      "tagline": "Your Jira issues and sprint board in a tab; hand an issue to the agent.",
+      "kinds": [
+        "canvas"
+      ],
+      "recommendWhen": "the workspace's work is tracked in Jira and the user wants to pick up an issue, check the sprint, or move an issue along",
+      "repo": "https://github.com/sodre90/mirador-jira.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 48 48\"><defs><linearGradient id=\"tile\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4c9aff\"/><stop offset=\"1\" stop-color=\"#0b5cd5\"/></linearGradient></defs><rect width=\"48\" height=\"48\" rx=\"12\" fill=\"url(#tile)\"/><g fill=\"#fff\"><rect x=\"8\" y=\"10\" width=\"9\" height=\"11\" rx=\"2.5\"/><rect x=\"8\" y=\"24\" width=\"9\" height=\"11\" rx=\"2.5\" opacity=\".75\"/><rect x=\"19.5\" y=\"10\" width=\"9\" height=\"11\" rx=\"2.5\"/><rect x=\"19.5\" y=\"24\" width=\"9\" height=\"7\" rx=\"2.5\" opacity=\".55\"/></g><rect x=\"31\" y=\"10\" width=\"9\" height=\"11\" rx=\"2.5\" fill=\"#36d399\"/><path d=\"m33 15.8 1.8 1.8 3.3-3.8\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-jira/v0.4.0/docs/sprint.png",
+          "caption": "The sprint as a board of its statuses"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-jira/v0.4.0/docs/mine.png",
+          "caption": "Mine, your open issues"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-jira/v0.4.0/docs/detail.png",
+          "caption": "An issue with its comments"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-jira/v0.4.0/docs/sources.png",
+          "caption": "Adding a support project's escalations about one component"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-jira/v0.4.0/docs/escalations.png",
+          "caption": "The escalations' own view"
+        }
+      ]
+    },
+    {
+      "name": "beads",
+      "title": "Beads",
+      "description": "A workspace's beads in a tab beside the chat: what's in progress, ready and blocked, its epics with their progress, its issues and memories, changed in a click and handed to the agent.",
+      "tagline": "A workspace's beads in a tab: what's ready, in progress and blocked.",
+      "kinds": [
+        "canvas"
+      ],
+      "recommendWhen": "the workspace tracks its work with beads (bd) and the user wants to see what's ready or blocked, plan an epic, or hand an issue to the agent",
+      "repo": "https://github.com/sodre90/mirador-beads-ui.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 48 48\"><defs><linearGradient id=\"tile\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#3dd6b3\"/><stop offset=\"1\" stop-color=\"#1a9e82\"/></linearGradient></defs><rect width=\"48\" height=\"48\" rx=\"12\" fill=\"url(#tile)\"/><path d=\"M7 24h34\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linecap=\"round\" opacity=\".7\"/><circle cx=\"13\" cy=\"24\" r=\"5.2\" fill=\"#fff\"/><circle cx=\"24\" cy=\"24\" r=\"5.2\" fill=\"#fff\"/><circle cx=\"35\" cy=\"24\" r=\"5.2\" fill=\"#fff\" opacity=\".55\"/><path d=\"m21.6 24 1.6 1.6 3-3.4\" fill=\"none\" stroke=\"#1a9e82\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-beads-ui/v0.1.3/docs/now.png",
+          "caption": "The Now board: in progress, ready, blocked and done"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-beads-ui/v0.1.3/docs/epics.png",
+          "caption": "An epic with its progress and the tree of its work"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-beads-ui/v0.1.3/docs/activity-of-issue.png",
+          "caption": "The issues list with an issue's timeline beside it"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-beads-ui/v0.1.3/docs/memories.png",
+          "caption": "Memories, grouped by key"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-beads-ui/v0.1.3/docs/activity.png",
+          "caption": "The activity feed, day by day"
+        }
+      ]
+    },
+    {
       "name": "delegate",
       "title": "Delegate",
       "description": "Hand tasks to a conversation on another profile.",
