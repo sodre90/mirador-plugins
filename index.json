@@ -195,6 +195,18 @@
       ]
     },
     {
+      "name": "spectra-council",
+      "title": "Spectra Council",
+      "description": "Several agents review a repository, a folder or a document, each on a profile of yours such as Claude, Codex or a local model. Each one investigates on its own and reports findings with evidence, then they back or challenge each other's findings over a few rounds. Every finding ends agreed, confirmed, disputed or withdrawn, with any dissent kept on the record; you accept or dismiss each one, and the agent fixes the ones you accept.",
+      "tagline": "Several models review your code on their own, then argue out each finding.",
+      "kinds": [
+        "canvas"
+      ],
+      "recommendWhen": "the user wants a review from more than one model or agent, a second opinion on a review, or findings that are argued out with evidence before anything is fixed",
+      "repo": "https://github.com/akanto/spectra-council.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1024\" height=\"1024\" viewBox=\"0 0 1024 1024\"><defs><radialGradient id=\"bg\" cx=\"0.4\" cy=\"0.3\" r=\"0.9\"><stop offset=\"0\" stop-color=\"#24375e\"/><stop offset=\"1\" stop-color=\"#0c1220\"/></radialGradient><linearGradient id=\"table\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fbf8f1\"/><stop offset=\"1\" stop-color=\"#efe9dc\"/></linearGradient></defs><rect x=\"100\" y=\"100\" width=\"824\" height=\"824\" rx=\"185\" fill=\"url(#bg)\"/><circle cx=\"512\" cy=\"222\" r=\"56\" fill=\"#ffd479\"/><circle cx=\"788\" cy=\"422\" r=\"56\" fill=\"#ffd479\" opacity=\".85\"/><circle cx=\"682\" cy=\"747\" r=\"56\" fill=\"#ffd479\" opacity=\".7\"/><circle cx=\"342\" cy=\"747\" r=\"56\" fill=\"#ffd479\" opacity=\".55\"/><circle cx=\"236\" cy=\"422\" r=\"56\" fill=\"#ffd479\" opacity=\".4\"/><circle cx=\"512\" cy=\"512\" r=\"180\" fill=\"url(#table)\"/><text x=\"512\" y=\"605\" text-anchor=\"middle\" font-family=\"'Iowan Old Style', Palatino, Georgia, serif\" font-size=\"270\" font-weight=\"700\" fill=\"#1d2b4a\">S</text></svg>"
+    },
+    {
       "name": "checklist",
       "title": "Checklist",
       "description": "A checklist of the steps of the agent's work beside the canvas, which the agent and the user tick as they go.",
