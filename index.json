@@ -195,6 +195,36 @@
       ]
     },
     {
+      "name": "race",
+      "title": "Race",
+      "description": "Race a task on several agents at once, such as four of a small local model, or one on each of several profiles to compare them, each in a git worktree of its own. They share a board where they post what they learn and borrow from each other's work. The race page gives each racer a lane: its time, changes, latest note and, for a race you started, the check Race ran in its folder. Then you take the best work, or combine the best parts, from the page, or the conversation that started the race picks.",
+      "tagline": "Several agents race one task, each in a worktree of its own; you take the best work, or combine it.",
+      "kinds": [
+        "canvas"
+      ],
+      "recommendWhen": "the user wants several agents, such as copies of a small local model or one on each of several profiles, to try the same task at once and keep the best result, wants to compare how models do on a task, or asks to race a task",
+      "repo": "https://github.com/sodre90/mirador-race.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#0f766e\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\"><path d=\"M14 18h22M14 28h30M14 38h18M14 48h26\"/></g><path d=\"M48 12v22\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M48 12h10l-3 4 3 4H48z\" fill=\"#fff\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-race/v0.2.0/screenshots/racers-beside-captain.png",
+          "caption": "Four racers at work under the conversation that started the race, each in a lane on the race page"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-race/v0.2.0/screenshots/race-form.png",
+          "caption": "/race:race opens a form: the task, a profile for each racer, the check, and whether they vote"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-race/v0.2.0/screenshots/race-under-way.png",
+          "caption": "Each racer's lane: its profile, time, changes, latest note and check, with its changes inline"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-race/v0.2.0/screenshots/pick-the-work.png",
+          "caption": "Once they're done, pick the work to take, with each racer's check and vote side by side"
+        }
+      ]
+    },
+    {
       "name": "spectra-council",
       "title": "Spectra Council",
       "description": "Several agents review a repository, a folder or a document, each on a profile of yours such as Claude, Codex or a local model. Each one investigates on its own and reports findings with evidence, then they back or challenge each other's findings over a few rounds. Every finding ends agreed, confirmed, disputed or withdrawn, with any dissent kept on the record; you accept or dismiss each one, and the agent fixes the ones you accept.",

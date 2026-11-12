@@ -13,6 +13,7 @@ The plugins listed in Plugins… of [Mirador](https://github.com/sodre90/mirador
 | [Jira](https://github.com/sodre90/mirador-jira) | A workspace's Jira issues and sprint board in a tab beside the chat. |
 | [Beads](https://github.com/sodre90/mirador-beads-ui) | A workspace's beads in a tab beside the chat. |
 | [Delegate](https://github.com/sodre90/mirador-delegate) | Hands easy tasks to another profile, such as a local model. |
+| [Race](https://github.com/sodre90/mirador-race) | Several agents race one task, each in a worktree of its own; you take the best work, or combine it. |
 | [Spectra Council](https://github.com/akanto/spectra-council) | Several models review your code on their own, then argue out each finding. |
 | [Checklist](https://github.com/sodre90/mirador-checklist) | The steps of the agent's work, ticked as they go. Installed with Mirador. |
 | [Code review](https://github.com/sodre90/mirador-review) | Code reviews and guided tours of the code flow. Installed with Mirador. |
