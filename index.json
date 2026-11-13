@@ -229,6 +229,36 @@
       ]
     },
     {
+      "name": "litellm",
+      "title": "LiteLLM",
+      "description": "What you spent through a LiteLLM proxy: today, this week and this month in the statusline, each conversation's own spend in place of the agent's estimate, and the proxy's figures in a window.",
+      "tagline": "What you spent through a LiteLLM proxy, in the statusline: today, this week, this month and this conversation.",
+      "kinds": [
+        "canvas"
+      ],
+      "recommendWhen": "the user's agent talks to a LiteLLM proxy, or they want to see what they spent through one",
+      "repo": "https://github.com/sodre90/mirador-litellm.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#1f7a5c\"/><path d=\"M14 46h36\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"17\" y=\"30\" width=\"7\" height=\"12\" rx=\"2\" fill=\"#fff\"/><rect x=\"28.5\" y=\"22\" width=\"7\" height=\"20\" rx=\"2\" fill=\"#fff\"/><rect x=\"40\" y=\"16\" width=\"7\" height=\"26\" rx=\"2\" fill=\"#fff\"/></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.1.0/screenshots/statusline-light.png",
+          "caption": "Today's, this week's and this month's spend, and the conversation's own"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.1.0/screenshots/gateway-window-light.png",
+          "caption": "The proxy's window: the totals, the last 30 days and the spend by model"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.1.0/screenshots/conversation-requests-light.png",
+          "caption": "A conversation's requests, each with its model, tokens and cost"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.1.0/screenshots/profile-settings-light.png",
+          "caption": "A profile turns the gateway on, and Test connection checks its URL and key"
+        }
+      ]
+    },
+    {
       "name": "spectra-council",
       "title": "Spectra Council",
       "description": "Several agents review a repository, a folder or a document, each on a profile of yours such as Claude, Codex or a local model. Each one investigates on its own and reports findings with evidence, then they back or challenge each other's findings over a few rounds. Every finding ends agreed, confirmed, disputed or withdrawn, with any dissent kept on the record; you accept or dismiss each one, and the agent fixes the ones you accept.",
