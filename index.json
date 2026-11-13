@@ -241,20 +241,20 @@
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#1f7a5c\"/><path d=\"M14 46h36\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"17\" y=\"30\" width=\"7\" height=\"12\" rx=\"2\" fill=\"#fff\"/><rect x=\"28.5\" y=\"22\" width=\"7\" height=\"20\" rx=\"2\" fill=\"#fff\"/><rect x=\"40\" y=\"16\" width=\"7\" height=\"26\" rx=\"2\" fill=\"#fff\"/></svg>",
       "screenshots": [
         {
-          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.2.0/screenshots/statusline-light.png",
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.3.0/screenshots/statusline-light.png",
           "caption": "Today's, this week's and this month's spend, and the conversation's own"
         },
         {
-          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.2.0/screenshots/gateway-window-light.png",
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.3.0/screenshots/gateway-window-light.png",
           "caption": "The proxy's window: the month against last month and its pace, each day by model, the conversations and prompt caching"
         },
         {
-          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.2.0/screenshots/conversation-requests-light.png",
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.3.0/screenshots/conversation-requests-light.png",
           "caption": "A conversation's spend over time, and each request with its cache, first token, cost and any failure"
         },
         {
-          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.2.0/screenshots/profile-settings-light.png",
-          "caption": "A profile turns the gateway on, and Test connection checks its URL and key"
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-litellm/v0.3.0/screenshots/profile-settings-light.png",
+          "caption": "A profile turns LiteLLM on, and Test connection checks its URL and key"
         }
       ]
     },
