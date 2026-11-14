@@ -15,6 +15,7 @@ The plugins listed in Plugins… of [Mirador](https://github.com/sodre90/mirador
 | [Delegate](https://github.com/sodre90/mirador-delegate) | Hands easy tasks to another profile, such as a local model. |
 | [Race](https://github.com/sodre90/mirador-race) | Several agents race one task, each in a worktree of its own; you take the best work, or combine it. |
 | [LiteLLM](https://github.com/sodre90/mirador-litellm) | What you spent through a LiteLLM proxy, in the statusline and a window of its own. |
+| [Usage](https://github.com/sodre90/mirador-usage) | Where your conversations could spend fewer tokens, on the context meter with Compact now. |
 | [Spectra Council](https://github.com/akanto/spectra-council) | Several models review your code on their own, then argue out each finding. |
 | [Checklist](https://github.com/sodre90/mirador-checklist) | The steps of the agent's work, ticked as they go. Installed with Mirador. |
 | [Code review](https://github.com/sodre90/mirador-review) | Code reviews and guided tours of the code flow. Installed with Mirador. |
