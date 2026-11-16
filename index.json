@@ -281,6 +281,32 @@
       ]
     },
     {
+      "name": "routines",
+      "title": "Routines",
+      "description": "Run a prompt in a workspace on a schedule you set: weekdays, every day, chosen days, every few hours, or a cron line. Each routine names a profile, what the agent should do and what you want to see when it ends. When one is due, Mirador starts a fresh conversation for it, which works on its own and then waits for you in the sidebar like any other. The workspace's Routines tab shows the week of runs, past and coming, counts down to each routine's next run, edits them, starts one now or skips its next run, and opens the conversation of any run.",
+      "tagline": "Run a prompt in a workspace on a schedule, each run a conversation of its own.",
+      "kinds": [
+        "canvas"
+      ],
+      "recommendWhen": "the user wants a prompt run in a workspace on a schedule, such as a nightly check, a morning triage or a weekly dependency update",
+      "repo": "https://github.com/sodre90/mirador-routines.git",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#c026d3\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M38.2 15.1A18 18 0 1 1 25.8 15.1\"/><path d=\"M20.2 13l5.6 2.1-3 5.2\"/><path d=\"M32 22v10l7 4\"/></g></svg>",
+      "screenshots": [
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-routines/v0.3.5/screenshots/runs-in-the-sidebar.png",
+          "caption": "Each run is a conversation of its own, waiting in the sidebar once it's done"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-routines/v0.3.5/screenshots/routines-and-runs.png",
+          "caption": "The week of runs, past and coming, the routines counting down to their next run, and the recent runs"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/sodre90/mirador-routines/v0.3.5/screenshots/routine-editor.png",
+          "caption": "Editing a routine: the profile, what to do, the end result you want and when it runs"
+        }
+      ]
+    },
+    {
       "name": "spectra-council",
       "title": "Spectra Council",
       "description": "Several agents review a repository, a folder or a document, each on a profile of yours such as Claude, Codex or a local model. Each one investigates on its own and reports findings with evidence, then they back or challenge each other's findings over a few rounds. Every finding ends agreed, confirmed, disputed or withdrawn, with any dissent kept on the record; you accept or dismiss each one, and the agent fixes the ones you accept.",
