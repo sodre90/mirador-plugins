@@ -31,10 +31,18 @@ Add an entry to `index.json`:
 - `recommendWhen`: when an agent should offer it, completing "Recommend it when …"
 - `repo`: an https git URL anyone can clone
 - `branch` (optional): a branch to install and follow instead of the releases; leave it out for a plugin that tags releases
-- `icon` (optional): the plugin's icon as SVG text, the same as the `icon.svg` its `plugin.json` names; up to 64 KB. Without one, Mirador shows a coloured letter
-- `tagline` (optional): one line on what the plugin does, for its tile in Plugins…; up to 120 characters. Without one, the tile shows the start of `description`
-- `kinds` (optional): what the plugin's `plugin.json` brings, `"app"`, `"canvas"` or both, so its tile shows the same badges before it is installed as after
-- `screenshots` (optional): pictures of the plugin at work for its page in Plugins…, each `{ "url", "caption" }`, with the URL an https link to a file of the plugin's repo at a release tag, such as `https://raw.githubusercontent.com/sodre90/mirador-media/v1.1.3/screenshots/trimmed-timeline.png`
+
+Then run `bun scripts/sync-catalog.ts`. It reads the `plugin.json` of the plugin's newest release and fills in what the plugin says about itself there, so its page in Plugins… looks the same before it is installed as after:
+
+- `icon`: the SVG file its `icon` names, as text; up to 64 KB. Without one, Mirador shows a coloured letter
+- `description`: its `description`, in place of the one above
+- `tagline`: its `tagline`, one line for its tile in Plugins…; up to 120 characters. Without one, the tile shows the start of `description`
+- `kinds`: `"app"`, `"canvas"` or both, as its `app` and `canvas` say, for the badges on its tile
+- `screenshots`: each picture its `screenshots` lists, `{ "path", "caption" }`, as `{ "url", "caption" }` with the URL a link to the file at the release tag, such as `https://raw.githubusercontent.com/sodre90/mirador-media/v1.1.4/screenshots/trimmed-timeline.png`
+
+A field the plugin's `plugin.json` leaves out keeps what the entry has, so for a plugin that doesn't describe itself yet, write those fields here by hand. The script reads GitHub repos only: an entry elsewhere keeps what it has.
+
+Every morning a workflow runs the script and opens a pull request with what the plugins' new releases changed. Read the taglines before merging: those of plugins a user hasn't installed go into their agents' prompts.
 
 ## Releases
 

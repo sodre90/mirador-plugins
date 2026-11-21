@@ -1,0 +1,48 @@
+name: Sync the catalog with its plugins
+
+on:
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: sync-catalog
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+      - run: bun test scripts
+      - name: Take each plugin's page from its newest release
+        id: sync
+        run: bun scripts/sync-catalog.ts > "$RUNNER_TEMP/changes.md" || echo "unreadable=true" >> "$GITHUB_OUTPUT"
+      - name: Open or update the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git diff --quiet index.json && exit 0
+          {
+            echo "Each plugin's page in Plugins… as its newest release's plugin.json gives it:"
+            echo
+            cat "$RUNNER_TEMP/changes.md"
+            echo
+            echo "Read the taglines before merging: those of plugins a user hasn't installed go into their agents' prompts."
+          } > "$RUNNER_TEMP/body.md"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c catalog-sync
+          git commit -m "Plugins… shows each plugin as its newest release describes itself" index.json
+          git push --force origin catalog-sync
+          if [ "$(gh pr view catalog-sync --json state --jq .state 2>/dev/null)" = "OPEN" ]; then
+            gh pr edit catalog-sync --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh pr create --head catalog-sync --title "Plugins… shows each plugin as its newest release describes itself" --body-file "$RUNNER_TEMP/body.md"
+          fi
+      - name: Fail when a plugin couldn't be read
+        if: steps.sync.outputs.unreadable == 'true'
+        run: exit 1
