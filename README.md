@@ -42,9 +42,11 @@ Then run `bun scripts/sync-catalog.ts`. It pins the plugin to its newest release
 
 A field the plugin's `plugin.json` leaves out keeps what the entry has, so for a plugin that doesn't describe itself yet, write those fields here by hand. The script reads GitHub repos only: pin an entry elsewhere by hand.
 
+Every released Mirador reads this file from `main`, the oldest ones too. Keep the five fields above in every entry, as text, and add new fields beside them, at the entry or at the top, rather than renaming, retyping or removing one: a Mirador that can't read an entry leaves the plugin out of Plugins….
+
 ## Reviewing releases
 
-Mirador installs a catalog plugin only at its pinned commit, and updates it, by itself or when the user agrees, only to the release this catalog pins. A plugin's new release reaches users when this repo's pin moves, not when its maintainer tags it, so this repo is what users trust.
+Mirador installs a catalog plugin only at its pinned commit, and updates it, by itself or when the user agrees, only to the release this catalog pins. A plugin's new release reaches users when this repo's pin moves, not when its maintainer tags it, so this repo is what users trust. Miradors from before the pins, 0.15.3 and older, ignore them and take each plugin's newest release tag, as they always did.
 
 Every morning a workflow runs the script and opens a pull request that moves the pins to the plugins' new releases, each with a link to the code it brings. Read that code before merging: once merged, every Mirador with the plugin installs it, and its host code runs with all of Mirador's access. Read the taglines too: those of plugins a user hasn't installed go into their agents' prompts. After releasing a plugin of your own, start the workflow at once with `gh workflow run sync-catalog.yml`.
 
@@ -58,7 +60,7 @@ To pull back a harmful release that went out, add its commit to `revoked`, with 
 "revoked": [{ "commit": "<the full 40-character commit>", "reason": "It sends your files to a server of its own." }]
 ```
 
-Mirador stops loading a plugin at a revoked commit and tells its users why, and never installs or updates to one; the script never pins one. Pin the plugin to a release that's safe, by hand if no newer one is.
+Mirador stops loading a plugin at a revoked commit and tells its users why, and never installs or updates to one; the script never pins one. Miradors from before the pins don't read `revoked` either. Pin the plugin to a release that's safe, by hand if no newer one is.
 
 ## Releases
 
