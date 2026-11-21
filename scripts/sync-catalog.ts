@@ -1,12 +1,12 @@
-// Fills each plugin's icon, description, tagline, screenshots and kinds in index.json from the plugin.json of its newest
-// release, so a plugin describes itself in one place. A field plugin.json doesn't give, or gives in a form Mirador
-// wouldn't show, keeps the catalog's value, and so does every field of a plugin that couldn't be read.
+// Pins each plugin in index.json to its newest release and the commit its tag points at, which is all Mirador installs,
+// and fills its icon, description, tagline, screenshots and kinds from that commit's plugin.json. A field plugin.json
+// doesn't give, or gives in a form Mirador wouldn't show, keeps the catalog's value, and so does every field of a plugin
+// that couldn't be read. Merging the pull request a bump lands in is what lets a release reach users, so read its code.
 
 const INDEX_PATH = new URL("../index.json", import.meta.url).pathname;
 const GIVE_UP_AFTER_MILLISECONDS = 20_000;
 const MAX_ICON_BYTES = 64 * 1024;
 const MAX_TAGLINE_LENGTH = 120;
-const RELEASE_TAG = /^v(\d+\.\d+\.\d+)$/;
 const KINDS = ["app", "canvas"] as const;
 const PAGE_FIELDS = ["icon", "description", "tagline", "screenshots", "kinds"] as const;
 
@@ -20,6 +20,8 @@ export interface Screenshot {
 export interface CatalogEntry {
   name: string;
   repo: string;
+  release?: string;
+  commit?: string;
   branch?: string;
   icon?: string;
   description?: string;
@@ -54,13 +56,6 @@ export function pathInside(path: unknown): string | null {
   if (typeof path !== "string") return null;
   const parts = path.split("/").filter((part) => part !== "" && part !== ".");
   return path.startsWith("/") || parts.length === 0 || parts.includes("..") ? null : parts.join("/");
-}
-
-/** The newest release tag `git ls-remote --tags --refs` lists, as Mirador would install it; null when there is none. */
-export function newestReleaseTag(lsRemoteOutput: string): string | null {
-  const tags = lsRemoteOutput.split("\n").flatMap((line) => line.split("refs/tags/")[1]?.trim() ?? []);
-  const releases = tags.filter((tag) => RELEASE_TAG.test(tag));
-  return releases.sort((one, other) => Bun.semver.order(other.slice(1), one.slice(1)))[0] ?? null;
 }
 
 /** Where raw files of a GitHub repo are at a ref; null for a repo elsewhere, whose files have no such address. */
@@ -125,12 +120,65 @@ export function withPage(entry: CatalogEntry, page: PluginPage): CatalogEntry {
 export const changedFields = (before: CatalogEntry, after: CatalogEntry) =>
   PAGE_FIELDS.filter((field) => JSON.stringify(before[field]) !== JSON.stringify(after[field]));
 
-/** The ref the catalog's pictures point at: the branch it follows, or the release Mirador installs. */
-async function refOf({ repo, branch }: CatalogEntry): Promise<string | null> {
-  if (branch) return branch;
-  const listed = await Bun.$`git ls-remote --tags --refs -- ${repo}`.quiet().nothrow();
+/** The release Mirador installs for a catalog plugin, and the commit its tag must point at. */
+export interface Pin {
+  release: string;
+  commit: string;
+}
+
+const pinOf = ({ release, commit }: CatalogEntry): Pin | null => (release && commit ? { release, commit } : null);
+
+/** Each release's commit by version, from `git ls-remote --tags`: an annotated tag's peeled line wins over the tag object. */
+export function releaseCommits(lsRemoteOutput: string): Map<string, string> {
+  const refs = lsRemoteOutput.split("\n").flatMap((line) => {
+    const [commit, ref] = line.trim().split(/\s+/);
+    const tag = ref?.match(/^refs\/tags\/v(\d+\.\d+\.\d+)(\^\{\})?$/);
+    return commit && tag?.[1] ? [{ release: tag[1], commit, peeled: tag[2] !== undefined }] : [];
+  });
+  const peeledLast = refs.toSorted((one, other) => Number(one.peeled) - Number(other.peeled));
+  return new Map(peeledLast.map(({ release, commit }) => [release, commit]));
+}
+
+export type PinChoice = { pin: Pin; problem: null } | { pin: null; problem: string };
+
+/**
+ * The newest release past the pinned one whose commit isn't revoked, else the pin as it is. A pinned tag that now
+ * points elsewhere is a problem, never a new pin: whoever moved it may be the harm the pin keeps out.
+ */
+export function chosenPin(pinned: Pin | null, commits: Map<string, string>, revoked: Set<string>): PinChoice {
+  const pinnedTagNow = pinned && commits.get(pinned.release);
+  if (pinned && pinnedTagNow !== pinned.commit) {
+    return { pin: null, problem: pinnedTagNow ? `v${pinned.release} now points at ${pinnedTagNow}, not the pinned ${pinned.commit}; the pin stays` : `v${pinned.release} is gone from the repo; the pin stays` };
+  }
+  const newer = [...commits].filter(([release, commit]) => !revoked.has(commit) && (pinned === null || Bun.semver.order(release, pinned.release) > 0));
+  const [newest] = newer.sort(([one], [other]) => Bun.semver.order(other, one));
+  if (newest) return { pin: { release: newest[0], commit: newest[1] }, problem: null };
+  if (pinned && revoked.has(pinned.commit)) return { pin: null, problem: `the pinned v${pinned.release} is revoked and no newer release is; pin an earlier one by hand` };
+  return pinned ? { pin: pinned, problem: null } : { pin: null, problem: "tags no release to pin" };
+}
+
+/** The entry pinned to `pin`, release and commit right after its repo. */
+export function withPin(entry: CatalogEntry, { release, commit }: Pin): CatalogEntry {
+  const fields = Object.entries(entry).flatMap(([field, value]): [string, unknown][] => {
+    if (field === "release" || field === "commit") return [];
+    return field === "repo" ? [[field, value], ["release", release], ["commit", commit]] : [[field, value]];
+  });
+  return Object.fromEntries(fields) as CatalogEntry;
+}
+
+/** Where to read what a pin bump brings, for whoever reviews it. */
+export const compareUrl = (repo: string, from: string, to: string) => `${repo.replace(/\.git$/, "").replace(/\/$/, "")}/compare/${from}...${to}`;
+
+async function releaseCommitsOf(repo: string) {
+  const listed = await Bun.$`git ls-remote --tags -- ${repo}`.quiet().nothrow();
   if (listed.exitCode !== 0) throw new Error(`git ls-remote failed: ${listed.stderr.toString().trim()}`);
-  return newestReleaseTag(listed.stdout.toString());
+  return releaseCommits(listed.stdout.toString());
+}
+
+function pinNote(entry: CatalogEntry, pinned: Pin | null, pin: Pin) {
+  if (pinned === null) return `pinned at ${pin.release} (${pin.commit.slice(0, 7)})`;
+  if (pinned.commit === pin.commit) return null;
+  return `${pinned.release} → ${pin.release}: read what it brings at ${compareUrl(entry.repo, pinned.commit, pin.commit)}`;
 }
 
 interface Synced {
@@ -139,37 +187,41 @@ interface Synced {
   problems: string[];
 }
 
-async function synced(entry: CatalogEntry): Promise<Synced> {
-  const unchanged = (note: string | null, problems: string[] = []): Synced => ({ entry, note, problems });
+async function synced(entry: CatalogEntry, revoked: Set<string>): Promise<Synced> {
+  const unchanged = (problem: string): Synced => ({ entry, note: null, problems: [problem] });
   try {
-    const ref = await refOf(entry);
-    if (ref === null) return unchanged("tags no release, so its pictures can't point at one; left as it is");
-    const files = rawFilesOf(entry.repo, ref);
-    if (files === null) return unchanged("isn't on GitHub, whose raw file addresses the catalog uses; left as it is");
+    if (entry.branch) return unchanged("follows a branch, which can't be pinned; list a release instead");
+    const pinned = pinOf(entry);
+    const choice = chosenPin(pinned, await releaseCommitsOf(entry.repo), revoked);
+    if (choice.problem !== null) return unchanged(choice.problem);
+    const { pin } = choice;
+    const files = rawFilesOf(entry.repo, pin.commit);
+    if (files === null) return unchanged("isn't on GitHub, whose raw file addresses the sync reads; pin it by hand");
     const response = await load(`${files}plugin.json`);
-    if (!response.ok) return unchanged(null, [`its plugin.json at ${ref} answered ${response.status}`]);
+    if (!response.ok) return unchanged(`its plugin.json at v${pin.release} answered ${response.status}`);
     const manifest = await response.json();
-    const version = ref.match(RELEASE_TAG)?.[1];
-    if (version && manifest.version !== version) return unchanged(null, [`its plugin.json at ${ref} gives version ${manifest.version}, which Mirador refuses`]);
+    if (manifest.version !== pin.release) return unchanged(`its plugin.json at v${pin.release} gives version ${manifest.version}, which Mirador refuses`);
     const problems: string[] = [];
-    const after = withPage(entry, await pageAt(files, manifest, problems));
+    const after = withPin(withPage(entry, await pageAt(files, manifest, problems)), pin);
     const changed = changedFields(entry, after);
-    return { entry: after, note: changed.length > 0 ? `${ref}: ${changed.join(", ")}` : null, problems };
+    const notes = [pinNote(entry, pinned, pin), changed.length > 0 ? `its page at ${pin.release}: ${changed.join(", ")}` : null].filter(Boolean);
+    return { entry: after, note: notes.length > 0 ? notes.join("; ") : null, problems };
   } catch (error) {
-    return unchanged(null, [error instanceof Error ? error.message : String(error)]);
+    return unchanged(error instanceof Error ? error.message : String(error));
   }
 }
 
 async function main() {
-  const index: { plugins: CatalogEntry[] } = await Bun.file(INDEX_PATH).json();
-  const results = await Promise.all(index.plugins.map(synced));
+  const index: { plugins: CatalogEntry[]; revoked: { commit: string; reason: string }[] } = await Bun.file(INDEX_PATH).json();
+  const revoked = new Set(index.revoked.map(({ commit }) => commit));
+  const results = await Promise.all(index.plugins.map((entry) => synced(entry, revoked)));
   const notes = results.flatMap(({ entry, note }) => (note ? [`- ${entry.name} ${note}`] : []));
   const problems = results.flatMap(({ entry, problems }) => problems.map((problem) => `- ${entry.name}: ${problem}`));
   const text = `${JSON.stringify({ ...index, plugins: results.map(({ entry }) => entry) }, null, 2)}\n`;
   if (text !== (await Bun.file(INDEX_PATH).text())) await Bun.write(INDEX_PATH, text);
-  console.log(notes.length > 0 ? notes.join("\n") : "Every plugin's page matches its plugin.json.");
+  console.log(notes.length > 0 ? notes.join("\n") : "Every plugin is pinned at its newest release, and its page matches its plugin.json.");
   if (problems.length > 0) {
-    console.error(`Couldn't read these, so their entries keep what they had:\n${problems.join("\n")}`);
+    console.error(`These keep what they had:\n${problems.join("\n")}`);
     process.exit(1);
   }
 }

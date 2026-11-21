@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { changedFields, newestReleaseTag, pageAt, pathInside, rawFilesOf, withPage, type CatalogEntry, type PluginPage } from "./sync-catalog.ts";
+import { changedFields, chosenPin, compareUrl, pageAt, pathInside, rawFilesOf, releaseCommits, withPage, withPin, type CatalogEntry, type PluginPage } from "./sync-catalog.ts";
 
 const FILES = "https://raw.githubusercontent.com/someone/plugin/v1.2.0/";
 const ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"/></svg>\n';
@@ -26,15 +26,62 @@ const repoWith =
     return file ? new Response(file.text ?? "", { headers: { "content-type": file.type ?? "text/plain" } }) : new Response("", { status: 404 });
   };
 
-describe("newestReleaseTag", () => {
-  test("picks the highest version among release tags, as Mirador does", () => {
-    const listed = ["aaa\trefs/tags/v0.9.0", "bbb\trefs/tags/v0.10.0", "ccc\trefs/tags/v0.10.0-rc1", "ddd\trefs/tags/latest", ""].join("\n");
-    expect(newestReleaseTag(listed)).toBe("v0.10.0");
+const [A, B, C, D] = ["a".repeat(40), "b".repeat(40), "c".repeat(40), "d".repeat(40)];
+
+describe("releaseCommits", () => {
+  test("takes an annotated tag's peeled commit, not the tag object, and leaves out tags that aren't releases", () => {
+    const listed = [`${A}\trefs/tags/v0.3.3`, `${B}\trefs/tags/v0.3.3^{}`, `${C}\trefs/tags/v0.4.0`, `${D}\trefs/tags/nightly`, `${D}\trefs/tags/v0.5.0-rc1`, ""].join("\n");
+    expect(releaseCommits(listed)).toEqual(new Map([["0.3.3", B], ["0.4.0", C]]));
+  });
+});
+
+describe("chosenPin", () => {
+  const commits = new Map([["0.9.0", A], ["0.10.0", B]]);
+
+  test("pins the newest release when nothing is pinned yet", () => {
+    expect(chosenPin(null, commits, new Set())).toEqual({ pin: { release: "0.10.0", commit: B }, problem: null });
   });
 
-  test("is null for a repo that tags no release", () => {
-    expect(newestReleaseTag("aaa\trefs/tags/nightly\n")).toBeNull();
+  test("moves the pin to a newer release", () => {
+    expect(chosenPin({ release: "0.9.0", commit: A }, commits, new Set())).toEqual({ pin: { release: "0.10.0", commit: B }, problem: null });
   });
+
+  test("keeps the pin when nothing newer is out", () => {
+    expect(chosenPin({ release: "0.10.0", commit: B }, commits, new Set())).toEqual({ pin: { release: "0.10.0", commit: B }, problem: null });
+  });
+
+  test("refuses to move on when the pinned tag now points at another commit", () => {
+    expect(chosenPin({ release: "0.9.0", commit: C }, commits, new Set())).toEqual({ pin: null, problem: `v0.9.0 now points at ${A}, not the pinned ${C}; the pin stays` });
+  });
+
+  test("refuses to move on when the pinned tag is gone", () => {
+    expect(chosenPin({ release: "0.8.0", commit: C }, commits, new Set()).problem).toBe("v0.8.0 is gone from the repo; the pin stays");
+  });
+
+  test("never pins a revoked commit", () => {
+    expect(chosenPin({ release: "0.9.0", commit: A }, commits, new Set([B]))).toEqual({ pin: { release: "0.9.0", commit: A }, problem: null });
+  });
+
+  test("says so when the pinned commit is revoked and nothing newer can replace it", () => {
+    expect(chosenPin({ release: "0.10.0", commit: B }, commits, new Set([B])).problem).toBe("the pinned v0.10.0 is revoked and no newer release is; pin an earlier one by hand");
+  });
+
+  test("says so when the repo tags no release", () => {
+    expect(chosenPin(null, new Map(), new Set()).problem).toBe("tags no release to pin");
+  });
+});
+
+describe("withPin", () => {
+  test("puts release and commit right after the repo, replacing the old pin", () => {
+    const pinned = withPin({ ...entry, release: "1.0.0", commit: A }, { release: "1.1.0", commit: B });
+    const fields = Object.keys(pinned);
+    expect(fields.slice(fields.indexOf("repo"), fields.indexOf("repo") + 3)).toEqual(["repo", "release", "commit"]);
+    expect(pinned).toMatchObject({ release: "1.1.0", commit: B });
+  });
+});
+
+test("compareUrl links what a bump brings", () => {
+  expect(compareUrl("https://github.com/someone/plugin.git", A, B)).toBe(`https://github.com/someone/plugin/compare/${A}...${B}`);
 });
 
 describe("rawFilesOf", () => {
