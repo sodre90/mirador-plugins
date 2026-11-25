@@ -12,6 +12,7 @@
       "repo": "https://github.com/sodre90/mirador-media.git",
       "release": "1.1.4",
       "commit": "978acf811aefa077652894f16a20f65b6882b9ff",
+      "api": 2,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#e5484d\"/><rect x=\"12\" y=\"18\" width=\"40\" height=\"28\" rx=\"4\" fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M28 25v14l11-7z\" fill=\"#fff\"/></svg>",
       "screenshots": [
         {
@@ -40,6 +41,7 @@
       "repo": "https://github.com/sodre90/mirador-google-docs.git",
       "release": "1.1.4",
       "commit": "1288aea9b219b646c2e155ecee8ea4f5a211b11b",
+      "api": 4,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#2f6bff\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 12h18l10 10v30H18z\"/><path d=\"M36 12v10h10M24 32h14M24 40h9\"/></g><path d=\"M40 52l11-11 4 4-11 11h-4z\" fill=\"#fff\" stroke=\"#2f6bff\" stroke-width=\"2\" stroke-linejoin=\"round\"/></svg>",
       "screenshots": [
         {
@@ -68,6 +70,7 @@
       "repo": "https://github.com/akanto/neo-manuscript.git",
       "release": "0.3.3",
       "commit": "f5a9b3cf0c41a45b7c0a74666628a10eee8837ab",
+      "api": 21,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1024\" height=\"1024\" viewBox=\"0 0 1024 1024\"><defs><radialGradient id=\"bg\" cx=\"0.4\" cy=\"0.3\" r=\"0.9\"><stop offset=\"0\" stop-color=\"#24375e\"/><stop offset=\"1\" stop-color=\"#0c1220\"/></radialGradient><linearGradient id=\"page\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fbf8f1\"/><stop offset=\"1\" stop-color=\"#efe9dc\"/></linearGradient></defs><rect x=\"100\" y=\"100\" width=\"824\" height=\"824\" rx=\"185\" fill=\"url(#bg)\"/><rect x=\"268\" y=\"196\" width=\"488\" height=\"632\" rx=\"36\" fill=\"url(#page)\"/><text x=\"512\" y=\"600\" text-anchor=\"middle\" font-family=\"'Iowan Old Style', Palatino, Georgia, serif\" font-size=\"400\" font-weight=\"700\" fill=\"#1d2b4a\">N</text><rect x=\"340\" y=\"690\" width=\"344\" height=\"22\" rx=\"11\" fill=\"#ffd479\"/><rect x=\"340\" y=\"740\" width=\"250\" height=\"22\" rx=\"11\" fill=\"#ffd479\" opacity=\".6\"/></svg>",
       "screenshots": [
         {
@@ -96,6 +99,7 @@
       "repo": "https://github.com/sodre90/mirador-github.git",
       "release": "0.2.4",
       "commit": "732226d4243d675ebe8a138d6455abeb5f23bc36",
+      "api": 7,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 48 48\"><defs><linearGradient id=\"tile\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#57606a\"/><stop offset=\"1\" stop-color=\"#1f2328\"/></linearGradient></defs><rect width=\"48\" height=\"48\" rx=\"12\" fill=\"url(#tile)\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"15\" cy=\"13\" r=\"3.6\"/><circle cx=\"15\" cy=\"35\" r=\"3.6\"/><path d=\"M15 16.6v14.8\"/><path d=\"M33 31.4V20a4.5 4.5 0 0 0-4.5-4.5H23\"/><path d=\"m26 11.5-3.5 4 3.5 4\"/></g><circle cx=\"33\" cy=\"35\" r=\"3.6\" fill=\"#3fb950\" stroke=\"#3fb950\" stroke-width=\"1\"/></svg>",
       "screenshots": [
         {
@@ -124,6 +128,7 @@
       "repo": "https://github.com/sodre90/mirador-jira.git",
       "release": "0.4.0",
       "commit": "86f91f31dcf050d17c691b4f7327a106f282c066",
+      "api": 7,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 48 48\"><defs><linearGradient id=\"tile\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4c9aff\"/><stop offset=\"1\" stop-color=\"#0b5cd5\"/></linearGradient></defs><rect width=\"48\" height=\"48\" rx=\"12\" fill=\"url(#tile)\"/><g fill=\"#fff\"><rect x=\"8\" y=\"10\" width=\"9\" height=\"11\" rx=\"2.5\"/><rect x=\"8\" y=\"24\" width=\"9\" height=\"11\" rx=\"2.5\" opacity=\".75\"/><rect x=\"19.5\" y=\"10\" width=\"9\" height=\"11\" rx=\"2.5\"/><rect x=\"19.5\" y=\"24\" width=\"9\" height=\"7\" rx=\"2.5\" opacity=\".55\"/></g><rect x=\"31\" y=\"10\" width=\"9\" height=\"11\" rx=\"2.5\" fill=\"#36d399\"/><path d=\"m33 15.8 1.8 1.8 3.3-3.8\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
       "screenshots": [
         {
@@ -160,6 +165,7 @@
       "repo": "https://github.com/sodre90/mirador-beads-ui.git",
       "release": "0.1.3",
       "commit": "ec4738cdc874a661c0e60af55bf618a53e846dff",
+      "api": 7,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 48 48\"><defs><linearGradient id=\"tile\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#3dd6b3\"/><stop offset=\"1\" stop-color=\"#1a9e82\"/></linearGradient></defs><rect width=\"48\" height=\"48\" rx=\"12\" fill=\"url(#tile)\"/><path d=\"M7 24h34\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linecap=\"round\" opacity=\".7\"/><circle cx=\"13\" cy=\"24\" r=\"5.2\" fill=\"#fff\"/><circle cx=\"24\" cy=\"24\" r=\"5.2\" fill=\"#fff\"/><circle cx=\"35\" cy=\"24\" r=\"5.2\" fill=\"#fff\" opacity=\".55\"/><path d=\"m21.6 24 1.6 1.6 3-3.4\" fill=\"none\" stroke=\"#1a9e82\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
       "screenshots": [
         {
@@ -196,6 +202,7 @@
       "repo": "https://github.com/sodre90/mirador-delegate.git",
       "release": "0.4.4",
       "commit": "563b8e164362b98b734ab2eee180ffe3bde3ea74",
+      "api": 9,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#d97706\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"18\" cy=\"32\" r=\"6\"/><circle cx=\"46\" cy=\"20\" r=\"6\"/><circle cx=\"46\" cy=\"44\" r=\"6\"/><path d=\"M24 29l16-7M24 35l16 7\"/></g></svg>",
       "screenshots": [
         {
@@ -220,6 +227,7 @@
       "repo": "https://github.com/sodre90/mirador-race.git",
       "release": "0.5.5",
       "commit": "947848f8eff5408ce3dce6f8e680c93c1027a652",
+      "api": 16,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#0f766e\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\"><path d=\"M14 18h22M14 28h30M14 38h18M14 48h26\"/></g><path d=\"M48 12v22\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M48 12h10l-3 4 3 4H48z\" fill=\"#fff\"/></svg>",
       "screenshots": [
         {
@@ -260,6 +268,7 @@
       "repo": "https://github.com/sodre90/mirador-litellm.git",
       "release": "0.4.0",
       "commit": "6bf99a4795de79f0abe202c52529b0cfcabb8142",
+      "api": 20,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#1f7a5c\"/><path d=\"M14 46h36\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"17\" y=\"30\" width=\"7\" height=\"12\" rx=\"2\" fill=\"#fff\"/><rect x=\"28.5\" y=\"22\" width=\"7\" height=\"20\" rx=\"2\" fill=\"#fff\"/><rect x=\"40\" y=\"16\" width=\"7\" height=\"26\" rx=\"2\" fill=\"#fff\"/></svg>",
       "screenshots": [
         {
@@ -292,6 +301,7 @@
       "repo": "https://github.com/sodre90/mirador-usage.git",
       "release": "0.1.0",
       "commit": "29ee86842bd6e923e7d6050d9bca6873dab76beb",
+      "api": 22,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#5b5bd6\"/><path d=\"M14 42a18 18 0 0 1 36 0\" fill=\"none\" stroke=\"#fff\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M32 42l9-11\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\"/><circle cx=\"32\" cy=\"42\" r=\"4\" fill=\"#fff\"/></svg>",
       "screenshots": [
         {
@@ -316,6 +326,7 @@
       "repo": "https://github.com/sodre90/mirador-routines.git",
       "release": "0.4.0",
       "commit": "71d00e90403f57aa0a3c3c3cd14b3df22df584a3",
+      "api": 23,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#c026d3\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M38.2 15.1A18 18 0 1 1 25.8 15.1\"/><path d=\"M20.2 13l5.6 2.1-3 5.2\"/><path d=\"M32 22v10l7 4\"/></g></svg>",
       "screenshots": [
         {
@@ -344,6 +355,7 @@
       "repo": "https://github.com/akanto/spectra-council.git",
       "release": "0.4.1",
       "commit": "fbef7386189281f3b550d1d2fa801bbfc1ef0fbc",
+      "api": 8,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1024\" height=\"1024\" viewBox=\"0 0 1024 1024\"><defs><radialGradient id=\"bg\" cx=\"0.4\" cy=\"0.3\" r=\"0.9\"><stop offset=\"0\" stop-color=\"#24375e\"/><stop offset=\"1\" stop-color=\"#0c1220\"/></radialGradient><linearGradient id=\"table\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fbf8f1\"/><stop offset=\"1\" stop-color=\"#efe9dc\"/></linearGradient></defs><rect x=\"100\" y=\"100\" width=\"824\" height=\"824\" rx=\"185\" fill=\"url(#bg)\"/><circle cx=\"512\" cy=\"222\" r=\"62\" fill=\"#ff6b6b\"/><circle cx=\"788\" cy=\"422\" r=\"62\" fill=\"#ffb347\"/><circle cx=\"682\" cy=\"747\" r=\"62\" fill=\"#ffd93d\"/><circle cx=\"342\" cy=\"747\" r=\"62\" fill=\"#5ad18a\"/><circle cx=\"236\" cy=\"422\" r=\"62\" fill=\"#5aa9ff\"/><circle cx=\"512\" cy=\"512\" r=\"180\" fill=\"url(#table)\"/><text x=\"512\" y=\"605\" text-anchor=\"middle\" font-family=\"'Iowan Old Style', Palatino, Georgia, serif\" font-size=\"270\" font-weight=\"700\" fill=\"#1d2b4a\">S</text></svg>",
       "screenshots": [
         {
@@ -372,6 +384,7 @@
       "repo": "https://github.com/sodre90/mirador-checklist.git",
       "release": "1.0.6",
       "commit": "db96375471067cf1d740971c1acdce65c945a546",
+      "api": 3,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#12a150\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 20l4 4 7-8M13 34l4 4 7-8\"/><path d=\"M31 21h20M31 35h20M31 47h20\"/><circle cx=\"18\" cy=\"47\" r=\"3\"/></g></svg>",
       "screenshots": [
         {
@@ -396,6 +409,7 @@
       "repo": "https://github.com/sodre90/mirador-review.git",
       "release": "1.0.14",
       "commit": "0a71c240809e35f5b4d94b3a06d47fd653febdfb",
+      "api": 3,
       "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#7a5af8\"/><g fill=\"none\" stroke=\"#fff\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M23 20L13 32l10 12M41 20l10 12-10 12\"/></g><circle cx=\"32\" cy=\"32\" r=\"3.5\" fill=\"#fff\"/></svg>",
       "screenshots": [
         {

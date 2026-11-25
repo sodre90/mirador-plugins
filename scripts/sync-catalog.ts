@@ -1,5 +1,6 @@
 // Pins each plugin in index.json to its newest release and the commit its tag points at, which is all Mirador installs,
-// and fills its icon, description, tagline, screenshots and kinds from that commit's plugin.json. A field plugin.json
+// with the plugin API it needs, and, when a Mirador may be too old for it, to the newest release each older plugin API
+// runs. Fills its icon, description, tagline, screenshots and kinds from that commit's plugin.json. A field plugin.json
 // doesn't give, or gives in a form Mirador wouldn't show, keeps the catalog's value, and so does every field of a plugin
 // that couldn't be read. Merging the pull request a bump lands in is what lets a release reach users, so read its code.
 
@@ -7,7 +8,10 @@ const INDEX_PATH = new URL("../index.json", import.meta.url).pathname;
 const GIVE_UP_AFTER_MILLISECONDS = 20_000;
 const MAX_ICON_BYTES = 64 * 1024;
 const MAX_TAGLINE_LENGTH = 120;
+/** The plugin API of the oldest Miradors that read pins: 0.15.x and older take each plugin's releases from its tags. */
+export const OLDEST_API = 23;
 const KINDS = ["app", "canvas"] as const;
+const PIN_FIELDS = ["release", "commit", "api", "older"];
 const PAGE_FIELDS = ["icon", "description", "tagline", "screenshots", "kinds"] as const;
 
 type Kind = (typeof KINDS)[number];
@@ -22,6 +26,8 @@ export interface CatalogEntry {
   repo: string;
   release?: string;
   commit?: string;
+  api?: number;
+  older?: OlderRelease[];
   branch?: string;
   icon?: string;
   description?: string;
@@ -39,6 +45,8 @@ export interface PluginPage {
   screenshots: Screenshot[] | null;
   kinds: Kind[] | null;
 }
+
+type Manifest = Record<string, unknown>;
 
 type Load = (url: string, method?: "GET" | "HEAD") => Promise<Response>;
 
@@ -126,6 +134,14 @@ export interface Pin {
   commit: string;
 }
 
+/** A release with the plugin API it needs. */
+export interface PinnedRelease extends Pin {
+  api: number;
+}
+
+/** The release Miradors take whose plugin API is too old for the entry's own, with what it says about itself where that differs from the entry. */
+export interface OlderRelease extends PinnedRelease, Partial<Pick<CatalogEntry, (typeof PAGE_FIELDS)[number]>> {}
+
 const pinOf = ({ release, commit }: CatalogEntry): Pin | null => (release && commit ? { release, commit } : null);
 
 /** Each release's commit by version, from `git ls-remote --tags`: an annotated tag's peeled line wins over the tag object. */
@@ -139,6 +155,46 @@ export function releaseCommits(lsRemoteOutput: string): Map<string, string> {
   return new Map(peeledLast.map(({ release, commit }) => [release, commit]));
 }
 
+/** Why a pin's tag no longer vouches for it; null while it points at the pinned commit. */
+export function movedTag({ release, commit }: Pin, commits: Map<string, string>): string | null {
+  const now = commits.get(release);
+  if (now === commit) return null;
+  return now ? `v${release} now points at ${now}, not the pinned ${commit}; the pin stays` : `v${release} is gone from the repo; the pin stays`;
+}
+
+export const pluginApiOf = ({ api }: Manifest): number | null => (typeof api === "number" && Number.isInteger(api) && api >= 1 ? api : null);
+
+/** The releases before `pin`, newest first, without the revoked ones. */
+export const releasesBefore = (pin: Pin, commits: Map<string, string>, revoked: Set<string>): Pin[] =>
+  [...commits]
+    .filter(([release, commit]) => !revoked.has(commit) && Bun.semver.order(release, pin.release) < 0)
+    .sort(([one], [other]) => Bun.semver.order(other, one))
+    .map(([release, commit]) => ({ release, commit }));
+
+/**
+ * Of the releases, newest first, the newest one for each plugin API older than `api`, down to one that every Mirador
+ * that reads pins runs. One that isn't a plugin yet, or whose plugin.json gives another version than its tag, is passed over.
+ */
+export async function newestForOlderApis(api: number, releases: Pin[], manifestAt: (release: Pin) => Promise<Manifest | null>): Promise<{ release: PinnedRelease; manifest: Manifest }[]> {
+  const found: { release: PinnedRelease; manifest: Manifest }[] = [];
+  let oldest = api;
+  for (const release of releases) {
+    if (oldest <= OLDEST_API) break;
+    const manifest = await manifestAt(release);
+    const needs = manifest && manifest.version === release.release ? pluginApiOf(manifest) : null;
+    if (manifest === null || needs === null || needs >= oldest) continue;
+    found.push({ release: { ...release, api: needs }, manifest });
+    oldest = needs;
+  }
+  return found;
+}
+
+/** An older release, with each field of its page the entry doesn't hold the same. */
+export function olderRelease(entry: CatalogEntry, release: PinnedRelease, page: PluginPage): OlderRelease {
+  const own = PAGE_FIELDS.filter((field) => page[field] !== null && JSON.stringify(page[field]) !== JSON.stringify(entry[field]));
+  return { ...release, ...Object.fromEntries(own.map((field) => [field, page[field]])) };
+}
+
 export type PinChoice = { pin: Pin; problem: null } | { pin: null; problem: string };
 
 /**
@@ -146,10 +202,8 @@ export type PinChoice = { pin: Pin; problem: null } | { pin: null; problem: stri
  * points elsewhere is a problem, never a new pin: whoever moved it may be the harm the pin keeps out.
  */
 export function chosenPin(pinned: Pin | null, commits: Map<string, string>, revoked: Set<string>): PinChoice {
-  const pinnedTagNow = pinned && commits.get(pinned.release);
-  if (pinned && pinnedTagNow !== pinned.commit) {
-    return { pin: null, problem: pinnedTagNow ? `v${pinned.release} now points at ${pinnedTagNow}, not the pinned ${pinned.commit}; the pin stays` : `v${pinned.release} is gone from the repo; the pin stays` };
-  }
+  const moved = pinned && movedTag(pinned, commits);
+  if (moved) return { pin: null, problem: moved };
   const newer = [...commits].filter(([release, commit]) => !revoked.has(commit) && (pinned === null || Bun.semver.order(release, pinned.release) > 0));
   const [newest] = newer.sort(([one], [other]) => Bun.semver.order(other, one));
   if (newest) return { pin: { release: newest[0], commit: newest[1] }, problem: null };
@@ -157,17 +211,23 @@ export function chosenPin(pinned: Pin | null, commits: Map<string, string>, revo
   return pinned ? { pin: pinned, problem: null } : { pin: null, problem: "tags no release to pin" };
 }
 
-/** The entry pinned to `pin`, release and commit right after its repo. */
-export function withPin(entry: CatalogEntry, { release, commit }: Pin): CatalogEntry {
+/** The entry pinned to its release and to the ones for older plugin APIs, right after its repo. */
+export function withPin(entry: CatalogEntry, { release, commit, api }: PinnedRelease, older: OlderRelease[] = []): CatalogEntry {
+  const pin = { release, commit, api, ...(older.length > 0 ? { older } : {}) };
   const fields = Object.entries(entry).flatMap(([field, value]): [string, unknown][] => {
-    if (field === "release" || field === "commit") return [];
-    return field === "repo" ? [[field, value], ["release", release], ["commit", commit]] : [[field, value]];
+    if (PIN_FIELDS.includes(field)) return [];
+    return field === "repo" ? [[field, value], ...Object.entries(pin)] : [[field, value]];
   });
   return Object.fromEntries(fields) as CatalogEntry;
 }
 
+const pageOf = (repo: string) => repo.replace(/\.git$/, "").replace(/\/$/, "");
+
 /** Where to read what a pin bump brings, for whoever reviews it. */
-export const compareUrl = (repo: string, from: string, to: string) => `${repo.replace(/\.git$/, "").replace(/\/$/, "")}/compare/${from}...${to}`;
+export const compareUrl = (repo: string, from: string, to: string) => `${pageOf(repo)}/compare/${from}...${to}`;
+
+/** Where to read a whole release, when none before it was read. */
+const treeUrl = (repo: string, commit: string) => `${pageOf(repo)}/tree/${commit}`;
 
 async function releaseCommitsOf(repo: string) {
   const listed = await Bun.$`git ls-remote --tags -- ${repo}`.quiet().nothrow();
@@ -175,10 +235,32 @@ async function releaseCommitsOf(repo: string) {
   return releaseCommits(listed.stdout.toString());
 }
 
+/** The plugin.json of a GitHub repo at a commit; null where it has none. */
+async function manifestAt(repo: string, commit: string): Promise<Manifest | null> {
+  const response = await load(`${rawFilesOf(repo, commit)}plugin.json`);
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(`its plugin.json at ${commit.slice(0, 7)} answered ${response.status}`);
+  return response.json();
+}
+
 function pinNote(entry: CatalogEntry, pinned: Pin | null, pin: Pin) {
   if (pinned === null) return `pinned at ${pin.release} (${pin.commit.slice(0, 7)})`;
   if (pinned.commit === pin.commit) return null;
   return `${pinned.release} → ${pin.release}: read what it brings at ${compareUrl(entry.repo, pinned.commit, pin.commit)}`;
+}
+
+/** What a bump changes for Miradors too old for the entry's own release; nothing while they keep what they had. */
+export function olderNotes(entry: CatalogEntry, older: OlderRelease[]): string[] {
+  const read = [pinOf(entry), ...(entry.older ?? [])].filter((pin) => pin !== null);
+  const had = new Map((entry.older ?? []).map(({ api, commit }) => [api, commit]));
+  return older
+    .filter(({ api, commit }) => had.get(api) !== commit)
+    .map(({ release, commit, api }) => {
+      const forOlder = `${release} for Miradors that speak plugin API ${api} but not the newest release's`;
+      if (read.some((pin) => pin.commit === commit)) return `keeps ${forOlder}`;
+      const lastRead = read.filter((pin) => Bun.semver.order(pin.release, release) < 0).sort((one, other) => Bun.semver.order(other.release, one.release))[0];
+      return `pins ${forOlder}: read ${lastRead ? `what it brings at ${compareUrl(entry.repo, lastRead.commit, commit)}` : `it at ${treeUrl(entry.repo, commit)}`}`;
+    });
 }
 
 interface Synced {
@@ -192,19 +274,28 @@ async function synced(entry: CatalogEntry, revoked: Set<string>): Promise<Synced
   try {
     if (entry.branch) return unchanged("follows a branch, which can't be pinned; list a release instead");
     const pinned = pinOf(entry);
-    const choice = chosenPin(pinned, await releaseCommitsOf(entry.repo), revoked);
+    const commits = await releaseCommitsOf(entry.repo);
+    const choice = chosenPin(pinned, commits, revoked);
     if (choice.problem !== null) return unchanged(choice.problem);
+    const moved = (entry.older ?? []).filter(({ commit }) => !revoked.has(commit)).flatMap((older) => movedTag(older, commits) ?? []);
+    if (moved.length > 0) return unchanged(moved.join("; "));
     const { pin } = choice;
     const files = rawFilesOf(entry.repo, pin.commit);
     if (files === null) return unchanged("isn't on GitHub, whose raw file addresses the sync reads; pin it by hand");
-    const response = await load(`${files}plugin.json`);
-    if (!response.ok) return unchanged(`its plugin.json at v${pin.release} answered ${response.status}`);
-    const manifest = await response.json();
+    const manifest = await manifestAt(entry.repo, pin.commit);
+    if (manifest === null) return unchanged(`its plugin.json at v${pin.release} is missing`);
     if (manifest.version !== pin.release) return unchanged(`its plugin.json at v${pin.release} gives version ${manifest.version}, which Mirador refuses`);
+    const api = pluginApiOf(manifest);
+    if (api === null) return unchanged(`its plugin.json at v${pin.release} names no plugin API`);
     const problems: string[] = [];
-    const after = withPin(withPage(entry, await pageAt(files, manifest, problems)), pin);
+    const described = withPage(entry, await pageAt(files, manifest, problems));
+    const forOlderApis = await newestForOlderApis(api, releasesBefore(pin, commits, revoked), ({ commit }) => manifestAt(entry.repo, commit));
+    const older = await Promise.all(
+      forOlderApis.map(async (found) => olderRelease(described, found.release, await pageAt(rawFilesOf(entry.repo, found.release.commit)!, found.manifest, problems))),
+    );
+    const after = withPin(described, { ...pin, api }, older);
     const changed = changedFields(entry, after);
-    const notes = [pinNote(entry, pinned, pin), changed.length > 0 ? `its page at ${pin.release}: ${changed.join(", ")}` : null].filter(Boolean);
+    const notes = [pinNote(entry, pinned, pin), ...olderNotes(entry, older), changed.length > 0 ? `its page at ${pin.release}: ${changed.join(", ")}` : null].filter(Boolean);
     return { entry: after, note: notes.length > 0 ? notes.join("; ") : null, problems };
   } catch (error) {
     return unchanged(error instanceof Error ? error.message : String(error));

@@ -1,5 +1,23 @@
 import { describe, expect, test } from "bun:test";
-import { changedFields, chosenPin, compareUrl, pageAt, pathInside, rawFilesOf, releaseCommits, withPage, withPin, type CatalogEntry, type PluginPage } from "./sync-catalog.ts";
+import {
+  changedFields,
+  chosenPin,
+  compareUrl,
+  movedTag,
+  newestForOlderApis,
+  olderNotes,
+  olderRelease,
+  OLDEST_API,
+  pageAt,
+  pathInside,
+  rawFilesOf,
+  releaseCommits,
+  releasesBefore,
+  withPage,
+  withPin,
+  type CatalogEntry,
+  type PluginPage,
+} from "./sync-catalog.ts";
 
 const FILES = "https://raw.githubusercontent.com/someone/plugin/v1.2.0/";
 const ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"/></svg>\n';
@@ -72,12 +90,80 @@ describe("chosenPin", () => {
 });
 
 describe("withPin", () => {
-  test("puts release and commit right after the repo, replacing the old pin", () => {
-    const pinned = withPin({ ...entry, release: "1.0.0", commit: A }, { release: "1.1.0", commit: B });
+  test("puts the release, its commit and its plugin API right after the repo, replacing the old pin", () => {
+    const pinned = withPin({ ...entry, release: "1.0.0", commit: A, api: 22 }, { release: "1.1.0", commit: B, api: 23 });
     const fields = Object.keys(pinned);
-    expect(fields.slice(fields.indexOf("repo"), fields.indexOf("repo") + 3)).toEqual(["repo", "release", "commit"]);
-    expect(pinned).toMatchObject({ release: "1.1.0", commit: B });
+    expect(fields.slice(fields.indexOf("repo"), fields.indexOf("repo") + 4)).toEqual(["repo", "release", "commit", "api"]);
+    expect(pinned).toEqual({ ...entry, release: "1.1.0", commit: B, api: 23 });
   });
+
+  test("puts the releases for older plugin APIs after them, and drops the ones no longer needed", () => {
+    const older = [{ release: "1.0.0", commit: A, api: 23 }];
+    const pinned = withPin(entry, { release: "2.0.0", commit: B, api: 24 }, older);
+    const fields = Object.keys(pinned);
+    expect(fields.slice(fields.indexOf("api"), fields.indexOf("api") + 2)).toEqual(["api", "older"]);
+    expect(pinned.older).toEqual(older);
+    expect(withPin(pinned, { release: "2.0.1", commit: C, api: 23 })).toEqual({ ...entry, release: "2.0.1", commit: C, api: 23 });
+  });
+});
+
+describe("the releases for older plugin APIs", () => {
+  const commits = new Map([["0.9.0", A], ["0.10.0", B], ["0.11.0", C], ["1.0.0", D]]);
+  const pin = { release: "1.0.0", commit: D };
+
+  /** Each release's plugin.json by version: its plugin API, or a whole manifest. */
+  const manifests =
+    (byRelease: Record<string, number | Record<string, unknown> | null>) =>
+    async ({ release }: { release: string }) => {
+      const manifest = byRelease[release];
+      return typeof manifest === "number" ? { version: release, api: manifest } : (manifest ?? null);
+    };
+  const found = async (api: number, byRelease: Parameters<typeof manifests>[0]) =>
+    (await newestForOlderApis(api, releasesBefore(pin, commits, new Set()), manifests(byRelease))).map(({ release }) => [release.release, release.api]);
+
+  test("are read newest first, without the pin itself and the revoked ones", () => {
+    expect(releasesBefore(pin, commits, new Set([B]))).toEqual([{ release: "0.11.0", commit: C }, { release: "0.9.0", commit: A }]);
+  });
+
+  test("are the newest for each older API, down to the API every Mirador that reads pins speaks", async () => {
+    expect(await found(OLDEST_API + 2, { "0.11.0": OLDEST_API + 1, "0.10.0": OLDEST_API, "0.9.0": OLDEST_API - 1 })).toEqual([["0.11.0", OLDEST_API + 1], ["0.10.0", OLDEST_API]]);
+    expect(await found(OLDEST_API + 1, { "0.11.0": OLDEST_API + 1, "0.10.0": 5, "0.9.0": 2 })).toEqual([["0.10.0", 5]]);
+  });
+
+  test("are none, and nothing is read, when every Mirador that reads pins runs the newest release", async () => {
+    const readNothing = () => Promise.reject(new Error("read a release it doesn't need"));
+    expect(await newestForOlderApis(OLDEST_API, releasesBefore(pin, commits, new Set()), readNothing)).toEqual([]);
+  });
+
+  test("pass over a release Mirador would refuse: no plugin.json, another version than its tag, or no plugin API", async () => {
+    expect(await found(OLDEST_API + 1, { "0.11.0": null, "0.10.0": { version: "0.9.9", api: 3 }, "0.9.0": { version: "0.9.0", api: "3" } })).toEqual([]);
+  });
+
+  test("hold their own page only where the entry says otherwise", () => {
+    const page = { ...nothing, tagline: entry.tagline!, description: "What it did.", kinds: ["app" as const] };
+    expect(olderRelease(entry, { release: "0.11.0", commit: C, api: 23 }, page)).toEqual({ release: "0.11.0", commit: C, api: 23, description: "What it did.", kinds: ["app"] });
+  });
+
+  test("are told once, with the code to read unless it was read as a pin before", () => {
+    const pinned = { ...entry, release: "0.11.0", commit: C, api: 23 };
+    expect(olderNotes(pinned, [])).toEqual([]);
+    expect(olderNotes(pinned, [{ release: "0.11.0", commit: C, api: 23 }])).toEqual(["keeps 0.11.0 for Miradors that speak plugin API 23 but not the newest release's"]);
+    const kept = { ...entry, release: "1.0.0", commit: D, api: 24, older: [{ release: "0.10.0", commit: B, api: 23 }] };
+    expect(olderNotes(kept, kept.older)).toEqual([]);
+    expect(olderNotes(kept, [{ release: "0.11.0", commit: C, api: 23 }])).toEqual([
+      `pins 0.11.0 for Miradors that speak plugin API 23 but not the newest release's: read what it brings at https://github.com/someone/plugin/compare/${B}...${C}`,
+    ]);
+    expect(olderNotes(entry, [{ release: "0.9.0", commit: A, api: 5 }])).toEqual([
+      `pins 0.9.0 for Miradors that speak plugin API 5 but not the newest release's: read it at https://github.com/someone/plugin/tree/${A}`,
+    ]);
+  });
+});
+
+test("movedTag says when a pin's tag points elsewhere or is gone", () => {
+  const commits = new Map([["0.9.0", A]]);
+  expect(movedTag({ release: "0.9.0", commit: A }, commits)).toBeNull();
+  expect(movedTag({ release: "0.9.0", commit: B }, commits)).toBe(`v0.9.0 now points at ${A}, not the pinned ${B}; the pin stays`);
+  expect(movedTag({ release: "0.8.0", commit: B }, commits)).toBe("v0.8.0 is gone from the repo; the pin stays");
 });
 
 test("compareUrl links what a bump brings", () => {

@@ -34,6 +34,8 @@ Add an entry to `index.json`:
 Then run `bun scripts/sync-catalog.ts`. It pins the plugin to its newest release and fills in what the plugin says about itself in that release's `plugin.json`, so its page in Plugins… looks the same before it is installed as after:
 
 - `release` and `commit`: the release Mirador installs, `x.y.z`, and the commit its tag `v<release>` points at (an annotated tag's own commit, not the tag object)
+- `api`: the plugin API that release needs, its `plugin.json`'s `api`
+- `older`: only when the release needs a plugin API newer than a Mirador that reads pins may speak, the newest release for each older plugin API, as `{ "release", "commit", "api" }` with the fields below where that release says otherwise than the entry
 - `icon`: the SVG file its `icon` names, as text; up to 64 KB. Without one, Mirador shows a coloured letter
 - `description`: its `description`, in place of the one above
 - `tagline`: its `tagline`, one line for its tile in Plugins…; up to 120 characters. Without one, the tile shows the start of `description`
@@ -46,9 +48,9 @@ Every released Mirador reads this file from `main`, the oldest ones too. Keep th
 
 ## Reviewing releases
 
-Mirador installs a catalog plugin only at its pinned commit, and updates it, by itself or when the user agrees, only to the release this catalog pins. A plugin's new release reaches users when this repo's pin moves, not when its maintainer tags it, so this repo is what users trust. Miradors from before the pins, 0.15.3 and older, ignore them and take each plugin's newest release tag, as they always did.
+Mirador installs a catalog plugin only at a pinned commit, and updates it, by itself or when the user agrees, only to a release this catalog pins: the entry's own when Mirador speaks its `api`, else the newest in `older` that it does. A plugin with neither isn't shown until Mirador is new enough. A plugin's new release reaches users when this repo's pin moves, not when its maintainer tags it, so this repo is what users trust. Miradors from before the pins, 0.15.x and older, ignore them: 0.15.5 and later 0.15.x take the newest release tag whose plugin API they speak, and older ones the newest release tag of all, which they refuse to install when it needs a newer Mirador.
 
-Every morning a workflow runs the script and opens a pull request that moves the pins to the plugins' new releases, each with a link to the code it brings. Read that code before merging: once merged, every Mirador with the plugin installs it, and its host code runs with all of Mirador's access. Read the taglines too: those of plugins a user hasn't installed go into their agents' prompts. After releasing a plugin of your own, start the workflow at once with `gh workflow run sync-catalog.yml`.
+Every morning a workflow runs the script and opens a pull request that moves the pins to the plugins' new releases, each with a link to the code it brings. When a plugin moves to a newer plugin API, the pull request also says which release older Miradors keep, with a link to its code unless it was pinned before. Read that code before merging: once merged, every Mirador with the plugin installs it, and its host code runs with all of Mirador's access. Read the taglines too: those of plugins a user hasn't installed go into their agents' prompts. After releasing a plugin of your own, start the workflow at once with `gh workflow run sync-catalog.yml`.
 
 When a pinned tag moves to another commit, or disappears, the script keeps the pin and the workflow fails, as that is what a harmful maintainer, or someone holding their GitHub token, would do.
 
