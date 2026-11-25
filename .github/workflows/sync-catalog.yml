@@ -38,11 +38,16 @@ jobs:
           git switch -c catalog-sync
           git commit -m "Plugins… installs and updates the plugins' new releases, as reviewed here" index.json
           git push --force origin catalog-sync
-          if [ "$(gh pr view catalog-sync --json state --jq .state 2>/dev/null)" = "OPEN" ]; then
-            gh pr edit catalog-sync --body-file "$RUNNER_TEMP/body.md"
-          else
-            gh pr create --head catalog-sync --title "Plugins… installs and updates the plugins' new releases, as reviewed here" --body-file "$RUNNER_TEMP/body.md"
-          fi
+          open_or_update_pull_request() {
+            if [ "$(gh pr view catalog-sync --json state --jq .state 2>/dev/null)" = "OPEN" ]; then
+              gh pr edit catalog-sync --body-file "$RUNNER_TEMP/body.md"
+            else
+              gh pr create --head catalog-sync --title "Plugins… installs and updates the plugins' new releases, as reviewed here" --body-file "$RUNNER_TEMP/body.md"
+            fi
+          }
+          open_or_update_pull_request ||
+            { sleep 15; open_or_update_pull_request; } ||
+            { sleep 60; open_or_update_pull_request; }
       - name: Fail when a pinned tag moved or a plugin couldn't be read
-        if: steps.sync.outputs.unreadable == 'true'
+        if: always() && steps.sync.outputs.unreadable == 'true'
         run: exit 1
